@@ -1,18 +1,13 @@
 import { Request, Response } from "express";
-import { AppDataSource } from "../config/dataSource";
-import { Product } from "../models/Product";
+import { ProductService } from "../service/ProductService";
 
 export class ProductController {
 
     static async getProducts(req: Request, res: Response): Promise<Response> {
 
-        const repository = AppDataSource.getRepository(Product);
+        const service = new ProductService();
 
-        const products = await repository.find({
-            relations: {
-                category: true
-            }
-        });
+        const products = await service.findAll();
 
         return res.status(200).json(products);
     }
